@@ -60,8 +60,11 @@ do
 	fi
 
 	# Actual resize
-	echo "$f: Resizing ${w}x${h} to max $s"
+	old_size=$(stat --printf="%s" "$f")
+	echo -n "$f: Resizing: ${w}x${h} -> $s. Size: $old_size -> "
 	nice convert "$f" $c -quality 80 -resize $s "$n$p.$e"
+	new_size=$(stat --printf="%s" "$n$p.$e")
+	echo "$new_size, $((new_size * 100 / old_size))%"
 
 	# Restore original timestamp
 	t=$(stat -c %Y "$f")
