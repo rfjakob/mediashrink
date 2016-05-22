@@ -61,7 +61,7 @@ do
 
 	# Actual resize
 	echo "$f: Resizing ${w}x${h} to max $s"
-	nice convert "$f" $c -resize $s "$n$p.$e"
+	nice convert "$f" $c -quality 80 -resize $s "$n$p.$e"
 
 	# Restore original timestamp
 	t=$(stat -c %Y "$f")
