@@ -21,9 +21,9 @@ do
 	e="${f##*.}"
 
 	# Is the file a JPEG image?
-	if ! file "$f" | grep "JPEG image data"
+	if ! file "$f" | grep "JPEG image data" > /dev/null
 	then
-		echo "$f: Not a JPEG image"
+		echo "$f: Skipping, not a JPEG image"
 		continue
 	fi
 
@@ -32,7 +32,7 @@ do
 	h=$(identify -format %h "$f")
 	if [[ $w -le 2048 && $h -le 2048 ]]
 	then
-		echo "$f: Not really bigger than FullHD: ${w}x${h}"
+		echo "$f: Skipping, not really bigger than FullHD: ${w}x${h}"
 		continue
 	elif [[ $(( 2 * h )) -le $w ]]
 	then
@@ -54,6 +54,7 @@ do
 	fi
 
 	# Actual resize
+	echo "$f: Resizing to max $s"
 	nice convert "$f" $c -resize $s "$n$p.$e"
 
 	# Restore original timestamp
