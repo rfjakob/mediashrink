@@ -1,10 +1,6 @@
 #!/bin/bash
 #
-# Resize pictures to FullHD (1920x1080)
-#
-# The output file gets "fullhd" appended, the original file gets
-# "fullhd-resized" appended and goes to the trash. This is done to easily
-# identify processed pictures when browsing the trash.
+# Recompress with mozjpeg, quality 80
 
 set -eu
 
