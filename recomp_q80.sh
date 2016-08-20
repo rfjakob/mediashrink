@@ -9,7 +9,6 @@ p="_mozjpeg80"
 
 for f in "$@"
 do
-
 	# Filename without extension
 	n="${f%.*}"
 	# Output file

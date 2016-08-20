@@ -17,8 +17,8 @@ do
 
 	# Filename without extension
 	n=${f%.*}
-	# Extension
-	e="${f##*.}"
+	# Output file
+	out="$n$p.jpg"
 
 	if [[ "$n" == *$p ]]
 	then
@@ -60,17 +60,17 @@ do
 	fi
 
 	# Actual resize
+	echo -n "$f: Resizing: ${w}x${h} -> $s. "
+	nice convert "$f" $c -quality 80 -resize $s "$out"
 	old_size=$(stat --printf="%s" "$f")
-	echo -n "$f: Resizing: ${w}x${h} -> $s. Size: $old_size -> "
-	nice convert "$f" $c -quality 80 -resize $s "$n$p.$e"
-	new_size=$(stat --printf="%s" "$n$p.$e")
-	echo "$new_size, $((new_size * 100 / old_size))%"
+	new_size=$(stat --printf="%s" "$out")
+	percent=$((new_size * 100 / old_size))
+	echo "New size: $percent%. "
 
 	# Restore original timestamp
 	t=$(stat -c %Y "$f")
-	touch -d "@$t" "$n$p.$e"
+	touch -d "@$t" "$out"
 
-	# Rename original file and move to trash
-	mv "$f" "$n$p-resized.$e"
-	trash-put "$n$p-resized.$e"
+	# Move original file to trash
+	trash-put "$f" || mv "$f" "$f.resized"
 done
