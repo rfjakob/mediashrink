@@ -47,8 +47,7 @@ do
 	fi
 
 	# Restore original timestamp
-	t=$(stat -c %Y "$f")
-	touch -d "@$t" "$out"
+	touch -r "$f" "$out"
 
 	# Move original file to trash
 	trash-put "$f"
