@@ -5,7 +5,7 @@
 set -eu
 
 # Postfix
-p="_mozjpeg80"
+p="_q80"
 
 for f in "$@"
 do
