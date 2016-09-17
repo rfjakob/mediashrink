@@ -2,6 +2,8 @@
 #
 # Recompress with mozjpeg, quality 80
 
+MOZJPEG=/usr/local/bin/cjpeg
+
 set -eu
 
 # Postfix
@@ -30,7 +32,7 @@ do
 	# Actual recomp
 	echo -n "$f: Recompressing. "
 	# mozjpeg has better compression AND quality than standard imagemagick
-	nice cjpeg -quality 80 "$f" > "$out.tmp"
+	nice $MOZJPEG -quality 80 "$f" > "$out.tmp"
 	old_size=$(stat --printf="%s" "$f")
 	new_size=$(stat --printf="%s" "$out.tmp")
 	percent=$((new_size * 100 / old_size))
