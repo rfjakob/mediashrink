@@ -2,14 +2,14 @@
 #
 # Resize pictures to FullHD (1920x1080)
 #
-# The output file gets "fullhd" appended, the original file gets
+# The output file gets "fullhd_q80" appended, the original file gets
 # "fullhd-resized" appended and goes to the trash. This is done to easily
 # identify processed pictures when browsing the trash.
 
 set -eu
 
 # Postfix
-p="_fullhd"
+p="_fullhd_q80"
 
 for f in "$@"
 do
