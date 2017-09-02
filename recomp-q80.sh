@@ -13,6 +13,8 @@ for f in "$@"
 do
 	# Filename without extension
 	n="${f%.*}"
+	# Strip useless "IMG_" prefix
+	n="${n/IMG_/}"
 	# Output file
 	out="$n$p.jpg"
 
@@ -33,11 +35,15 @@ do
 	echo -n "$f: Recompressing. "
 	# mozjpeg has better compression AND quality than standard imagemagick
 	nice $MOZJPEG -quality 80 "$f" > "$out.tmp"
+
+	# Calculate new filesize
 	old_size=$(stat --printf="%s" "$f")
 	new_size=$(stat --printf="%s" "$out.tmp")
 	percent=$((new_size * 100 / old_size))
 	echo -n "New size: $percent%. "
 
+	# Overwrite original image only if the new one is significantly
+	# smaller
 	if [[ $percent -gt 80 ]]
 	then
 		echo "Keeping original."
