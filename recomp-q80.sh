@@ -2,7 +2,7 @@
 #
 # Recompress with mozjpeg, quality 80
 
-MOZJPEG=/usr/local/bin/cjpeg
+MOZJPEG=/opt/mozjpeg/bin/cjpeg
 
 set -eu
 
