@@ -25,8 +25,6 @@ for f in "$@"
 do
 	# Filename without extension
 	n=${f%.*}
-	# Strip useless "IMG_" prefix
-	n="${n/IMG_/}"
 	# Output file
 	out="$n$p.jpg"
 
