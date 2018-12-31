@@ -11,6 +11,8 @@
 
 set -eu
 
+MYNAME=$(basename "$0")
+
 # Postfix
 p="_uhd80"
 
@@ -24,6 +26,10 @@ RESIZE="-resize 2160^>"
 # We are a low-priority job
 renice 19 $$ > /dev/null
 
+SKIPPED=0
+KEPT=0
+REPLACED=0
+
 for f in "$@"
 do
 	# Filename without extension
@@ -34,6 +40,7 @@ do
 	if [[ "$n" == *$p ]]
 	then
 			echo "$f: Skipping, already has \"$p\" postfix"
+			let SKIPPED=SKIPPED+1
 			continue
 	fi
 
@@ -41,6 +48,7 @@ do
 	if ! file "$f" | grep "JPEG image data" > /dev/null
 	then
 		echo "$f: Skipping, not a JPEG image"
+		let SKIPPED=SKIPPED+1
 		continue
 	fi
 
@@ -59,10 +67,12 @@ do
 	then
 		echo "Keeping original."
 		rm "$out.tmp"
+		let KEPT=KEPT+1
 		continue
 	else
 		echo "Replacing file."
 		mv "$out.tmp" "$out"
+		let REPLACED=REPLACED+1
 	fi
 
 	# Restore original timestamp
@@ -71,3 +81,11 @@ do
 	# Move original file to trash
 	trash-put "$f"
 done
+
+# Print success message to terminal and to GUI notifications,
+# if availabe.
+MSG="Done. Replaced $REPLACED files, kept $KEPT, skipped $SKIPPED"
+echo "$MSG"
+if command -v notify-send ; then
+	notify-send "$MYNAME" "$MSG"
+fi
