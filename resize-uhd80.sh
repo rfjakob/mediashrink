@@ -15,10 +15,6 @@ p="_uhd80"
 maxw=3840
 maxh=2160
 
-MOZJPEG=/usr/local/bin/cjpeg
-# Exit here if mozjpeg is missing
-$MOZJPEG -version
-
 # Resize the SMALLER side to 2160px if it is larger
 RESIZE="-resize 2160^>"
 
