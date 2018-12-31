@@ -1,6 +1,9 @@
 #!/bin/bash
 #
-# Resize pictures to UHD (3840x2160), save with quality 80
+# This script:
+# 1) Resizes to UHD (3840x2160) *if bigger*
+# 2) Compresses with ImageMagick quality 80
+# 3) Replaces original file *if new file is smaller than 80% of original*
 #
 # The output file gets "uhd80" appended, the original file gets
 # ".resized" appended and goes to the trash. This is done to easily
