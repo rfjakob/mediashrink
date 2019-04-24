@@ -1,13 +1,10 @@
 #!/bin/bash
 #
-# Transcode Motion JPEG to x264 + mp3
+# Transcode Motion JPEG to x264/aac in mp4 container
 #
-# The output file gets "_x264" appended
+# The output file gets the .mp4 extension
 
 set -eu
-
-# Postfix
-p="_x264"
 
 for f in "$@"
 do
@@ -23,14 +20,16 @@ do
 		continue
 	fi
 
-	# Actual resize
-	nice ffmpeg -i "$f" -c:v libx264 -c:a libmp3lame -aq 2 "$n$p.mkv"
+	# Actual transcode. For an .mp4 output file, ffmpeg uses
+	# libx264 and aac per default (checked Apr 2019). Specify the
+	# codecs explicitely should the defaults change.
+	nice ffmpeg -i "$f" -c:v libx264 -c:a aac "$n.mp4"
 
 	# Restore original timestamp
 	t=$(stat -c %Y "$f")
-	touch -d "@$t" "$n$p.mkv"
+	touch -d "@$t" "$n.mp4"
 
 	# Rename original file and move to trash
-	mv "$f" "$n$p-transcoded.$e"
-	trash-put "$n$p-transcoded.$e"
+	mv "$f" "$n-transcoded.$e"
+	trash-put "$n-transcoded.$e"
 done
