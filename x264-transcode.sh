@@ -23,11 +23,14 @@ do
 	# Actual transcode. For an .mp4 output file, ffmpeg uses
 	# libx264 and aac per default (checked Apr 2019). Specify the
 	# codecs explicitely should the defaults change.
-	nice ffmpeg -i "$f" -c:v libx264 -c:a aac "$n.mp4"
+	nice ffmpeg -hide_banner -i "$f" -c:v libx264 -c:a aac "$n.mp4"
 
 	# Restore original timestamp
 	t=$(stat -c %Y "$f")
 	touch -d "@$t" "$n.mp4"
+
+	# Show old and new size
+	ls -sh "$f" "$n.mp4"
 
 	# Rename original file and move to trash
 	mv "$f" "$n-transcoded.$e"
