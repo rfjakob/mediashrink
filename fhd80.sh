@@ -1,23 +1,18 @@
 #!/bin/bash
 #
-# This script:
-# 1) Resizes to UHD (3840x2160) *if bigger*
-# 2) Compresses with ImageMagick quality 80
-# 3) Replaces original file *if new file is smaller than 80% of original*
-#
-# The output file gets "uhd80" appended, the original file gets
-# ".resized" appended and goes to the trash. This is done to easily
-# identify processed pictures when browsing the trash.
+# Resize pictures to FullHD (1920x1080), save with quality 80
+
+set -eu
 
 set -eu
 
 MYNAME=$(basename "$0")
 
 # Postfix
-p="_uhd80"
+p="_fhd80"
 
-# Resize the SMALLER side to 2160px if it is larger
-RESIZE="-resize 2160^>"
+# Resize the SMALLER side to 1080px if it is larger
+RESIZE="-resize 1080^>"
 
 # We are a low-priority job
 renice 19 $$ > /dev/null
